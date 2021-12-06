@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AdjacencyList, Edge, GraphData } from './types';
+import { ElementDefinition } from 'cytoscape';
 
 const defaultGraph = {
 	edgeList: [
@@ -8,29 +10,39 @@ const defaultGraph = {
 		{ source: 2, target: 5, weight: 10 },
 		{ source: 2, target: 3, weight: 5 },
 		{ source: 3, target: 6, weight: 10 },
-		{ source: 3, target: 7, weight: 10 }
+		{ source: 3, target: 7, weight: 10 },
 	],
 	vertexCount: 7,
 	animationType: 'bfs',
-	startVertex: 1
+	startVertex: 1,
 };
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class DataService {
-	private elements = [];
-	private edges = [];
-	private adjacencyList = {};
+	private elements: ElementDefinition[] = [];
+	private edges: Edge[] = [];
+	private adjacencyList: AdjacencyList = {};
 	private startVertex = 1;
-	private vertexCount;
+	private vertexCount!: number;
 	private animationType = 'bfs';
 
 	constructor() {
 		this.setGraph(defaultGraph);
 	}
 
-	setGraph({ edgeList, vertexCount, animationType, startVertex }) {
+	setGraph({
+		edgeList,
+		vertexCount,
+		animationType,
+		startVertex,
+	}: {
+		edgeList: Edge[];
+		vertexCount: number;
+		animationType: string;
+		startVertex: number;
+	}) {
 		this.animationType = animationType;
 		this.startVertex = startVertex;
 
@@ -50,8 +62,8 @@ export class DataService {
 					id: `${edge.source}-${edge.target}`,
 					source: `${edge.source}`,
 					target: `${edge.target}`,
-					weight: `${edge.weight}`
-				}
+					weight: `${edge.weight}`,
+				},
 			});
 
 			this.adjacencyList[edge.source].push(edge.target);
@@ -62,14 +74,14 @@ export class DataService {
 		return this.elements;
 	}
 
-	getData() {
+	getData(): GraphData {
 		return {
 			elements: this.elements,
 			adjacencyList: this.adjacencyList,
 			vertexCount: this.vertexCount,
 			animationType: this.animationType,
 			edges: this.edges,
-			startVertex: this.startVertex
+			startVertex: this.startVertex,
 		};
 	}
 

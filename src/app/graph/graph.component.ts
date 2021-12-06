@@ -2,17 +2,18 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import * as cytoscape from 'cytoscape';
 
 import { DataService } from '../data.service';
+import { GraphData } from '../types';
 import { bfs, dfs, kruskal } from './algorithms';
 
 @Component({
 	selector: 'app-graph',
 	templateUrl: './graph.component.html',
-	styleUrls: ['./graph.component.scss']
+	styleUrls: ['./graph.component.scss'],
 })
 export class GraphComponent implements OnInit, OnDestroy {
-	graph;
-	cy = null;
-	timeout;
+	graph!: GraphData;
+	cy!: cytoscape.Core;
+	timeout?: number;
 
 	constructor(private dataService: DataService) {}
 
@@ -26,7 +27,7 @@ export class GraphComponent implements OnInit, OnDestroy {
 				.stylesheet()
 				.selector('node')
 				.style({
-					content: 'data(id)'
+					content: 'data(id)',
 				})
 				.selector('edge')
 				.style({
@@ -34,26 +35,27 @@ export class GraphComponent implements OnInit, OnDestroy {
 					'target-arrow-shape': 'triangle',
 					width: 4,
 					'line-color': '#ddd',
-					'target-arrow-color': '#ddd'
+					'target-arrow-color': '#ddd',
 				})
 				.selector('edge[weight]')
 				.style({
-					content: 'data(weight)'
+					content: 'data(weight)',
 				})
 				.selector('.highlighted')
 				.style({
 					'background-color': '#61bffc',
 					'line-color': '#61bffc',
 					'target-arrow-color': '#61bffc',
-					'transition-property': 'background-color, line-color, target-arrow-color',
-					'transition-duration': '0.3s'
+					'transition-property':
+						'background-color, line-color, target-arrow-color',
+					'transition-duration': '0.3s',
 				}),
 
 			layout: {
 				name: 'breadthfirst',
-				roots: '#1',
-				directed: false
-			}
+				roots: '#1' as any,
+				directed: false,
+			},
 		});
 
 		this.startAnimation();
@@ -63,8 +65,8 @@ export class GraphComponent implements OnInit, OnDestroy {
 
 	startAnimation() {
 		this.cy.elements().removeClass('highlighted');
-		clearTimeout(this.timeout);
-		let path;
+		this.timeout && clearTimeout(this.timeout);
+		let path: string[];
 
 		if (this.graph.animationType === 'bfs') {
 			path = bfs(this.graph.adjacencyList, this.graph.startVertex);
@@ -80,7 +82,7 @@ export class GraphComponent implements OnInit, OnDestroy {
 				this.cy.getElementById(path[i]).addClass('highlighted');
 
 				i++;
-				this.timeout = setTimeout(highlightNextEle, 1000);
+				this.timeout = setTimeout(highlightNextEle, 1000) as unknown as number;
 			}
 		};
 

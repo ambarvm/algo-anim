@@ -6,13 +6,17 @@ import { Router } from '@angular/router';
 @Component({
 	selector: 'app-form',
 	templateUrl: './form.component.html',
-	styleUrls: ['./form.component.scss']
+	styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
-	graphForm: FormGroup;
+	graphForm!: FormGroup;
 	matrixSize = 2;
 
-	constructor(private fb: FormBuilder, private dataService: DataService, private router: Router) {}
+	constructor(
+		private fb: FormBuilder,
+		private dataService: DataService,
+		private router: Router,
+	) {}
 
 	ngOnInit() {
 		const graph = this.dataService.getData();
@@ -23,8 +27,8 @@ export class FormComponent implements OnInit {
 			edgeList: this.fb.array(
 				graph.edges.map(edge => {
 					return this.fb.group(edge);
-				})
-			)
+				}),
+			),
 		});
 	}
 
@@ -36,7 +40,7 @@ export class FormComponent implements OnInit {
 		const edge = this.fb.group({
 			source: '',
 			target: '',
-			weight: ''
+			weight: '',
 		});
 		this.edgeForms.push(edge);
 	}

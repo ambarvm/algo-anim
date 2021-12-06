@@ -1,4 +1,6 @@
-export const bfs = (graph, startVertex): string[] => {
+import { AdjacencyList, Edge } from '../types';
+
+export const bfs = (graph: AdjacencyList, startVertex: number): string[] => {
 	const queue = [startVertex];
 	const visited: boolean[] = [];
 	const path = [];
@@ -7,7 +9,7 @@ export const bfs = (graph, startVertex): string[] => {
 	path.push(`${startVertex}`);
 
 	while (queue.length > 0) {
-		const vertex = queue.pop();
+		const vertex = queue.pop() as number;
 
 		graph[vertex].forEach(neighbor => {
 			if (!visited[neighbor]) {
@@ -22,11 +24,11 @@ export const bfs = (graph, startVertex): string[] => {
 	return path;
 };
 
-export const dfs = (graph, startVertex): string[] => {
-	const path = [];
+export const dfs = (graph: AdjacencyList, startVertex: number): string[] => {
+	const path: string[] = [];
 	const visited: boolean[] = [];
 
-	function dfsUtility(currentVertex, previousVertex) {
+	function dfsUtility(currentVertex: number, previousVertex?: number) {
 		if (visited[currentVertex]) {
 			return;
 		}
@@ -42,30 +44,16 @@ export const dfs = (graph, startVertex): string[] => {
 		});
 	}
 
-	dfsUtility(startVertex, null);
+	dfsUtility(startVertex);
 
 	return path;
 };
 
-export const kruskal = (vertexCount, edges): string[] => {
+export const kruskal = (vertexCount: number, edges: Edge[]): string[] => {
 	const sequence = [];
 	let count = 0;
 
-	const disjointSet = {
-		parents: [],
-		find: vertex => {
-			while (disjointSet.parents[vertex] !== -1) {
-				if (!disjointSet.parents[vertex]) {
-					throw new Error('Invalid vertex');
-				}
-				vertex = disjointSet.parents[vertex];
-			}
-			return vertex;
-		},
-		union: (x, y) => {
-			disjointSet.parents[disjointSet.find(x)] = disjointSet.find(y);
-		}
-	};
+	const disjointSet = new DisjointSet();
 
 	for (let i = 1; i <= vertexCount; i++) {
 		disjointSet.parents[i] = -1;
@@ -91,3 +79,21 @@ export const kruskal = (vertexCount, edges): string[] => {
 
 	return sequence;
 };
+
+class DisjointSet {
+	parents: number[] = [];
+
+	find(vertex: number) {
+		while (this.parents[vertex] !== -1) {
+			if (!this.parents[vertex]) {
+				throw new Error('Invalid vertex');
+			}
+			vertex = this.parents[vertex];
+		}
+		return vertex;
+	}
+
+	union(x: number, y: number) {
+		this.parents[this.find(x)] = this.find(y);
+	}
+}

@@ -51,10 +51,14 @@
 			<div class="field"><label class="label">Source</label></div>
 			<div class="field"><label class="label">Target</label></div>
 			<div class="field"><label class="label">Weight</label></div>
-			<div class="button" style="visibility: hidden;">Delete Edge</div>
+			<div class="button" style="visibility: hidden">Delete Edge</div>
 		</div>
 
-		<div class="field" *ngFor="let edge of edgeForms.controls; let i = index" [formGroupName]="i">
+		<div
+			class="field"
+			*ngFor="let edge of edgeForms.controls; let i = index"
+			[formGroupName]="i"
+		>
 			<div class="field-body">
 				<div class="field">
 					<div class="control">
@@ -80,18 +84,27 @@
 				</div>
 				<div class="field">
 					<div class="control">
-						<input class="input" type="number" placeholder="Weight" formControlName="weight" />
+						<input
+							class="input"
+							type="number"
+							placeholder="Weight"
+							formControlName="weight"
+						/>
 					</div>
 				</div>
 
-				<button (click)="deleteRow(i)" class="button is-danger">Delete Edge</button>
+				<button (click)="deleteRow(i)" class="button is-danger">
+					Delete Edge
+				</button>
 			</div>
 		</div>
 	</div>
 
 	<div class="field is-grouped">
 		<div class="control">
-			<button type="button" class="button is-black" (click)="addRow()">Add Edge</button>
+			<button type="button" class="button is-black" (click)="addRow()">
+				Add Edge
+			</button>
 		</div>
 		<div class="control">
 			<button class="button is-primary" type="submit">Show Animation</button>

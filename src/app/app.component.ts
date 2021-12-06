@@ -6,18 +6,14 @@ import { slider } from './route-animations';
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss'],
-	animations: [
-		// <-- add your animations here
-		// fader
-		slider
-		// transformer,
-		// stepper
-	]
+	animations: [slider],
 })
 export class AppComponent {
-	title = 'Algo Anim';
-
 	prepareRoute(outlet: RouterOutlet) {
-		return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+		return (
+			outlet &&
+			outlet.activatedRouteData &&
+			outlet.activatedRouteData['animation']
+		);
 	}
 }
