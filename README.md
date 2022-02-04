@@ -1,6 +1,6 @@
 # AlgoAnim
 
-[Demo](https://supercoww.github.io/algo-anim/)
+[Demo](https://ambarvm.github.io/algo-anim/)
 
 Graph animations for algorithms:
 
